@@ -1,13 +1,18 @@
 'use strict';
 
+let _ = require('lodash');
 let ApiRequest = require('./apirequest');
+let SearchResponse = require('./searchresponse');
+
+const DEFAULT_SIZE = 10;
+const MAX_SIZE = 50;
 
 class TrialSearch extends ApiRequest {
 
     constructor() {
         super('https://clinicaltrialsapi.cancer.gov/v1/clinical-trials');
         this.setParam('from', 0);
-        this.setParam('size', 10);
+        this.setParam('size', DEFAULT_SIZE);
     }
     
     addInclude(include) {
@@ -18,8 +23,14 @@ class TrialSearch extends ApiRequest {
         return this.addListParam('exclude', exclude);
     }
 
+    setFrom(from) {
+        from = +from || 0;
+        return this.setParam('from', Math.max(0, from));
+    }
+
     setSize(size) {
-        return this.setParam('size', size);
+        size = +size || DEFAULT_SIZE;
+        return this.setParam('size', Math.max(0, Math.min(MAX_SIZE, size)));
     }
 
     setFullText(text) {
@@ -44,6 +55,19 @@ class TrialSearch extends ApiRequest {
 
     addCity(usCity) {
         return this.addListParam('sites.org_city', text);    
+    }
+
+    clone() {
+        return (new TrialSearch()).setParams(_.clone(this.params, true));
+    }
+
+    request() {
+        let promise = super.request();
+        return new Promise((resolve, reject) => {
+            promise.then((data) => {
+                resolve(new SearchResponse(data, this));        
+            }).catch(reject);
+        });
     }
 }
 

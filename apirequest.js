@@ -43,12 +43,12 @@ class ApiRequest {
             if (this.params) {
                 uri += '?' + querystring.stringify(this.params);
             }
+            console.log('[api-request]]:', uri)
             request.get(uri, (err, httpResponse, responseBody) => {
                 if (err) {
                     reject(err);
                 }
-
-                resolve(responseBody);
+                resolve(JSON.parse(responseBody));
             })
         });
     }
