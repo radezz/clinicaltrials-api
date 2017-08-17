@@ -2,7 +2,7 @@
   "name": "clinicaltrials-api",
   "version": "0.0.1",
   "description": "Api wrapper for clinical trials api search. Uses https://clinicaltrialsapi.cancer.gov/",
-  "main": "clinicaltrials-api.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

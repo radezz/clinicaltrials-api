@@ -1,4 +1,4 @@
-let TrialSearch = require('../trialsearch');
+let TrialSearch = require('../api/trialsearch');
 
 let count = 0;
 
